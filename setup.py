@@ -170,6 +170,8 @@ class cmake_build_ext(build_ext):
         # Pass the python path to cmake so it can reuse the build dependencies
         # on subsequent calls to python.
         cmake_args += ['-DVLLM_PYTHON_PATH={}'.format(":".join(sys.path))]
+        cmake_args += ['-DCUDA_INCLUDE_DIRS={}/inlcude'.format(CUDA_HOME)]
+        cmake_args += ['-DCUDA_TOOLKIT_ROOT_DIR={}'.format(CUDA_HOME)]
 
         #
         # Setup parallelism and build tool
@@ -255,8 +257,8 @@ def get_package_version():
         return str(public_version)
 
 
-PYTORCH_VERSION = "2.4.0"
-MAIN_CUDA_VERSION = "12.1"
+PYTORCH_VERSION = torch.__version__.split('+')[0]
+MAIN_CUDA_VERSION = "-1"
 
 
 def get_nvcc_cuda_version() -> Version:
